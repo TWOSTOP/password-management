@@ -1,0 +1,29 @@
+sudo: required
+dist: trusty
+language: node_js
+node_js:
+- '8.9'
+addons: 
+apt:
+  sources:
+  - google-chrome
+  packages:
+  - google-chrome-stable
+  - google-chrome-beta
+before_install:
+- export CHROME_BIN=chromium-browser
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+before_script:
+- npm install -g @angular/cli
+- npm install -g karma
+- npm install
+- ng build
+script: karma start config/karma.conf.js --single-run
+deploy:
+  provider: heroku
+  api_key:
+    secure: JEdFfWkm91edoyL3vPa2KLp91fh6JYnam+Jdr4qSXRoDoqg6u0e8oTmHxwIO+uT6TqsIAJ0M/H3Y/6yJC1VCy8L2qobwBQLYh2vmTVMdSNpCu1NndK2mUnRlJR2tqJrNRaNU3948XCRGald1rMEBZNxPuF/isKaH02ZMWZ7mWxpOKyXPXFBOH5B+eMoeQ+41VuqRo2PL1Guh8DIUBu4vIpaPhzVH0M9RJnP88OrKVRGGHxwlSXpKn5ofOmtdG+R+auljEAoxMkYl0gTpvstsCvX6wWIr5bCm0kwPvWgyCUF8F+mxY/NuWPyNo9k89TAUJ4UwU0BS2BC+bq13USlN1DAXvv2YXTZfwZztlmmX9b4sV4o57pk5Jh4rWbPogeWGW0UhFYrqUqO7Aee9PzFWUMSEKacYTjPtxDfqHSIRIbCV6wPWjDDq9YALZRnoE8TEaICs0JU+77pJ8/XHkVVQuXNg6wacv7Ru+Ma61YvDFKOfO8GkAdoROx8IyUnDH44lMUipySBYzPG2QnCLrcLRs54Kmu+spRKcOJ+pn7QL5VO7zFfyYMODYNHhUpRyRpjdl/g9TrH6/CHOGQyPPlqFgDmeSya78rGZ8O0mb/sjGUrZMQYNgHlj4KTRac+5FVSF2/0CIfGT8/n+IgSh06KHkYPTMNOQA8JD1zXJRELr+EU=
+  app: angular-cd-demo
+  on:
+    repo: TWOSTOP/password-management
